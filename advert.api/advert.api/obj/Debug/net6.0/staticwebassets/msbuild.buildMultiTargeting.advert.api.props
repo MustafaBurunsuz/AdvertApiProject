@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\advert.api.props" />
+</Project>
