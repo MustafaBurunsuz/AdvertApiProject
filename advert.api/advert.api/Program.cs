@@ -10,27 +10,20 @@ using static Dapper.SqlMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var settings = builder.Configuration.GetSection("ConnectionStrings").Get<ConnectionSetingsModel>();
-//builder.Services.AddSingleton(new DbConnectionFactory(settings.DefaultConnection));
-//builder.Services.AddScoped<IRabbitMqService, RabbitMqService>();
+
 
 builder.Services.AddSingleton<IRabbitMqService>(provider =>
 {
     var hostName = "localhost"; // RabbitMQ sunucu adresi
-    var queueName = "myQueue";  // RabbitMQ kuyruk adý
-    var userName = "userName";  // RabbitMQ kuyruk adý
-    var password = "password";  // RabbitMQ kuyruk adý
+    var queueName = "myQueue";  // RabbitMQ kuyruk adÃ½
+    var userName = "userName";  // RabbitMQ kuyruk adÃ½
+    var password = "password";  // RabbitMQ kuyruk adÃ½
     return new RabbitMqService(hostName, queueName, userName, password);
 });
-
-// IDbConnectionFactory servisini ekleyin
-//builder.Services.AddSingleton<IDbConnectionFactory>(new DbConnectionFactory(settings.DefaultConnection));
 
 builder.Services.AddTransient<IDbConnectionFactory>(_ =>
 {
@@ -40,10 +33,8 @@ builder.Services.AddTransient<IDbConnectionFactory>(_ =>
 builder.Services.AddSingleton<IAdvertRepository, AdvertRepository>();
 builder.Services.AddSingleton<IRabbitMqConsumer, RabbitMqConsumer>();
 
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
